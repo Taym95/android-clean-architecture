@@ -1,0 +1,49 @@
+[
+  {
+    "copyright": "Vincent Jacques",
+    "date": "2006-06-29",
+    "explanation": "An old crescent Moon shares the eastern sky over Menton, France with the sister stars of the Pleiades cluster in this early morning skyscape recorded just last Friday, June 23rd. (Bright Venus was also near the eastern horizon, but is not pictured here.) Astronomical images of the well-known Pleiades often show the cluster's alluring blue reflection nebulae, but they are washed out here by the bright moonlight. Still, while the crescent Moon is overexposed, surface features can be seen on the dim lunar night side illuminated by earthshine - light from sunlit planet Earth. Of course, you can spot a young crescent Moon in the early evening sky tonight. Having left the Pleiades behind, a lovely lunar crescent now appears in the west, lining up with planets Mars, Saturn, and Mercury along the solar system's ecliptic plane.",
+    "hdurl": "https://apod.nasa.gov/apod/image/0606/moonPL_jacques_f.jpg",
+    "media_type": "image",
+    "service_version": "v1",
+    "title": "Old Moon and Sister Stars",
+    "url": "https://apod.nasa.gov/apod/image/0606/moonPL_jacques_c.jpg"
+  },
+  {
+    "copyright": "Dave Green",
+    "date": "2022-02-23",
+    "explanation": "What will the huge Green Bank Telescope discover tonight? Pictured, the Robert C. Byrd Green Bank Telescope (GBT) on the lower right is the largest fully-pointable single-dish radio telescope in the world. With a central dish larger than a football field, the GBT is nestled in the hills of West Virginia, USA in a radio quiet zone where the use of cell phones, WiFi emitters, and even microwave ovens are limited. The GBT explores our universe not only during the night -- but during the day, too, since the daytime sky is typically dark in radio waves.  Taken in late January, the featured image was planned for months to get the setting location of Orion just right.  The image is a composite of a foreground shot taken over a kilometer away from the GBT, and a background shot built up of long exposures during the previous night. The deep background image of Orion is fitting because the GBT is famous for, among many discoveries, mapping the unusual magnetic field in the Orion Molecular Cloud Complex.",
+    "hdurl": "https://apod.nasa.gov/apod/image/2202/GreenBankOrion_Green_1638.jpg",
+    "media_type": "image",
+    "service_version": "v1",
+    "title": "Orion over Green Bank",
+    "url": "https://apod.nasa.gov/apod/image/2202/GreenBankOrion_Green_960.jpg"
+  },
+  {
+    "date": "2011-08-28",
+    "explanation": "What's causing a huge jet to emanate from the center of galaxy M87? Although the unusual jet was first noticed early in the twentieth century, the exact cause is still debated.  The above picture taken by the Hubble Space Telescope in 1998 shows clear details, however. The most popular hypothesis holds that the jet is created by energetic gas swirling around a massive black hole at the galaxy's center.  The result is a 5000 light-year long blowtorch where electrons are ejected outward at near light-speed, emitting eerily blue light during a magnetic spiral.  M87 is a giant elliptical galaxy residing only 50 million light-years away in the Virgo Cluster of Galaxies.  The faint dots of light surrounding M87's center are large ancient globular clusters of stars.",
+    "hdurl": "https://apod.nasa.gov/apod/image/1108/m87jet_hst_1222.jpg",
+    "media_type": "image",
+    "service_version": "v1",
+    "title": "A Jet from Galaxy M87",
+    "url": "https://apod.nasa.gov/apod/image/1108/m87jet_hst_900.jpg"
+  },
+  {
+    "date": "2003-01-08",
+    "explanation": "Using the orbiting Chandra X-ray Observatory, astronomers have taken this long look at the core of our Milky Way galaxy, some 26,000 light-years away. The spectacular false-color view spans about 130 light-years. It reveals an energetic region rich in x-ray sources and high-lighted by the central source, Sagittarius A*, known to be a supermassive black hole with 3 million times the mass of the Sun. Given its tremendous mass, Sagittarius A* is amazingly faint in x-rays in comparison to central black holes observed in distant galaxies, even during its frequent x-ray flares. This suggests that this supermassive black hole has been starved by a lack of infalling material. In fact, the sharp Chandra image shows clouds of multi-million degree gas dozens of light-years across flanking (upper right and lower left) the central region -- evidence that violent events have cleared much material from the vicinity of the black hole.",
+    "hdurl": "https://apod.nasa.gov/apod/image/0301/mwcore_cxo_full.jpg",
+    "media_type": "image",
+    "service_version": "v1",
+    "title": "X-Rays from the Galactic Core",
+    "url": "https://apod.nasa.gov/apod/image/0301/mwcore_cxo_c1.jpg"
+  },
+  {
+    "date": "2017-10-15",
+    "explanation": "Where did the gold in your jewelry originate?  No one is completely sure.  The relative average abundance in our Solar System appears higher than can be made in the early universe, in stars, and even in typical supernova explosions.  Some astronomers have suggested, and many believe, that neutron-rich heavy elements such as gold might be most easily made in rare neutron-rich explosions such as the collision of neutron stars.  Pictured here is an artist's illustration depicting two neutron stars spiraling in toward each other, just before they collide.  Since neutron star collisions are also suggested as the origin of short duration gamma-ray bursts, it is possible that you already own a souvenir from one of the most powerful explosions in the universe.   Editorial Note: This \"best of\" APOD ran previously on 2011 September 11.  News Note: The next APOD will debut during an NSF discovery announcement and press briefing on Monday.",
+    "hdurl": "https://apod.nasa.gov/apod/image/1710/nsmerger3_heasarc_3000.jpg",
+    "media_type": "image",
+    "service_version": "v1",
+    "title": "On the Origin of Gold",
+    "url": "https://apod.nasa.gov/apod/image/1710/nsmerger3_heasarc_960.jpg"
+  }
+]
