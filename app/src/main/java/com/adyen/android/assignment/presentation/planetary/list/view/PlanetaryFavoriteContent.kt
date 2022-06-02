@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.adyen.android.assignment.app.theme.DarkBlue
 import com.adyen.android.assignment.data.model.dto.planetary.PlanetaryDto
 
 @Composable
@@ -118,7 +118,7 @@ fun PlanetaryFavoriteRow(
                         Icon(
                             painter = rememberVectorPainter(Icons.Default.Delete),
                             contentDescription = null,
-                            tint = Color(0xFF982626)
+                            tint = DarkBlue
                         )
                     }
                 }

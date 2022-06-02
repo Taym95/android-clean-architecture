@@ -12,13 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.core.content.ContextCompat.startActivity
 import com.adyen.android.assignment.R
+import com.adyen.android.assignment.app.theme.DarkBlue
 import com.adyen.android.assignment.utils.network.ConnectionState
 import com.adyen.android.assignment.utils.network.connectivityState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,7 +39,7 @@ fun ErrorView(modifier: Modifier = Modifier, e: Throwable, action: () -> Unit) {
         Icon(
             painter = rememberVectorPainter(Icons.Default.ErrorOutline),
             contentDescription = null,
-            tint = Red,
+            tint = DarkBlue,
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentSize(Alignment.Center)

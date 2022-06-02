@@ -1,7 +1,5 @@
 package com.adyen.android.assignment.presentation.planetary.list
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,6 +26,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.adyen.android.assignment.R
+import com.adyen.android.assignment.app.theme.PlanetaryColors
+import com.adyen.android.assignment.app.theme.PlanetaryTypography
+import com.adyen.android.assignment.app.theme.White
 import com.adyen.android.assignment.app.views.EmptyView
 import com.adyen.android.assignment.app.views.ErrorView
 import com.adyen.android.assignment.app.views.LoadingView
@@ -35,7 +36,6 @@ import com.adyen.android.assignment.presentation.planetary.list.view.FavoritePla
 import com.adyen.android.assignment.presentation.planetary.list.view.PlanetaryContent
 import com.adyen.android.assignment.utils.base.mvvm.BaseViewState
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlanetaryScreen(
     modifier: Modifier = Modifier,
@@ -60,6 +60,7 @@ fun PlanetaryScreen(
             val tabsNames = remember { PlanetaryTabs.values().map { it.value } }
             TabRow(
                 selectedTabIndex = selectedIndex.value,
+                backgroundColor = PlanetaryColors.primary,
                 indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
                         height = IndicatorHeight,
@@ -100,7 +101,7 @@ fun PlanetaryScreen(
             }
         }
         if (openReorderDialog) {
-            ReorderDialog(onDismiss = {
+            ReorderDialog(onReorderType = {
                 openReorderDialog = false
                 viewModel.onTriggerEvent(
                     PlanetaryEvent.OrderPlanetary(
@@ -108,6 +109,8 @@ fun PlanetaryScreen(
                         (uiState as BaseViewState.Data<PlanetaryViewState>).value.planetaryList.mutableCopyOf()
                     )
                 )
+            }, onClose = {
+                openReorderDialog = false
             })
         }
 
@@ -123,7 +126,6 @@ private enum class PlanetaryTabs(@StringRes val value: Int) {
     PLANETARY_LIST_FAVORITE(R.string.planetary_favorite_list);
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun PlanetaryPage(
     uiState: BaseViewState<*>,
@@ -159,7 +161,6 @@ private fun PlanetaryPage(
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun FavoritesPage(
     uiState: BaseViewState<*>,
@@ -217,7 +218,7 @@ private fun PlanetaryBody(
                 ) {
                     Row(
                         modifier = Modifier.width(130.dp),
-                        horizontalArrangement = Arrangement.SpaceAround,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(imageVector = Icons.Default.List, "")
@@ -242,9 +243,11 @@ fun PlanetaryToolbar(
                 title,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
+                style = PlanetaryTypography.h2
             )
         },
         modifier = Modifier.fillMaxWidth(),
+        backgroundColor = PlanetaryColors.primary,
         elevation = elevation
     )
 }
@@ -261,17 +264,20 @@ fun PlanetaryToolbarWithNavIcon(
                 title,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
+                style = PlanetaryTypography.h2
             )
         },
         navigationIcon = {
             Icon(
                 rememberVectorPainter(Icons.Filled.ArrowBack),
                 contentDescription = null,
+                tint = White,
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable { pressOnBack.invoke() }
             )
         },
+        backgroundColor = PlanetaryColors.primary,
         modifier = Modifier.fillMaxWidth(),
         elevation = elevation
     )
@@ -279,14 +285,13 @@ fun PlanetaryToolbarWithNavIcon(
 
 
 @Composable
-fun ReorderDialog(onDismiss: (reorderType: ReorderType) -> Unit) {
+fun ReorderDialog(onReorderType: (reorderType: ReorderType) -> Unit, onClose: () -> Unit) {
     var reorderType by remember {
         mutableStateOf(ReorderType.ORDER_BY_TITLE)
     }
-
     Dialog(
         onDismissRequest = {
-            onDismiss(reorderType)
+            onReorderType(reorderType)
         }
     ) {
         Surface(
@@ -318,9 +323,8 @@ fun ReorderDialog(onDismiss: (reorderType: ReorderType) -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 36.dp, start = 36.dp, end = 36.dp, bottom = 8.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF35898f)),
                     onClick = {
-                        onDismiss(reorderType)
+                        onReorderType(reorderType)
                     }) {
                     Text(
                         text = "Apply",
@@ -329,10 +333,11 @@ fun ReorderDialog(onDismiss: (reorderType: ReorderType) -> Unit) {
                 }
                 TextButton(
                     onClick = {
-                        onDismiss(reorderType)
+                        onClose()
                     }) {
                     Text(
                         text = "Reset",
+                        color = Color.White,
                         style = TextStyle(
                             fontSize = 14.sp
                         )

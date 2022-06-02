@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -29,9 +28,10 @@ import com.adyen.android.assignment.presentation.planetary.list.PlanetaryViewMod
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextOverflow
+import com.adyen.android.assignment.app.theme.PlanetaryTypography
+import com.adyen.android.assignment.app.theme.DarkBlue
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlanetaryContent(
     viewModel: PlanetaryViewModel = hiltViewModel(),
@@ -59,7 +59,6 @@ fun PlanetaryContent(
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PlanetaryRow(
@@ -109,6 +108,7 @@ fun PlanetaryRow(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 2.dp),
+                        style = PlanetaryTypography.subtitle1
                     )
                 }
                 Row(
@@ -120,6 +120,7 @@ fun PlanetaryRow(
                         text = planetary.date!!,
                         maxLines = 1,
                         overflow = TextOverflow.Visible,
+                        style = PlanetaryTypography.subtitle1
                     )
                     FavoriteButton(viewModel, planetary)
                 }
@@ -128,7 +129,6 @@ fun PlanetaryRow(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FavoriteButton(
     viewModel: PlanetaryViewModel = hiltViewModel(),
@@ -140,7 +140,7 @@ fun FavoriteButton(
         isFavorite = !isFavorite
         viewModel.onTriggerEvent(PlanetaryEvent.AddFavoritePlanetary(planetary))
     }) {
-        val tintColor = if (isFavorite) Red else Color(0xFF6E6E6E)
+        val tintColor = if (isFavorite) DarkBlue else Color(0xFF6E6E6E)
         Icon(
             painter = rememberVectorPainter(Icons.Default.Favorite),
             contentDescription = null,

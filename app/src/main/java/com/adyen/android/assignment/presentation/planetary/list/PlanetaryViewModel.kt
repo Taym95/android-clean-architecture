@@ -22,7 +22,6 @@ class PlanetaryViewModel @Inject constructor(
     private val addPlanetaryFavorite: AddPlanetaryFavorite
 ) : MvvmIViewModel<BaseViewState<PlanetaryViewState>, PlanetaryEvent>() {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onTriggerEvent(eventType: PlanetaryEvent) {
         when (eventType) {
             is PlanetaryEvent.LoadPlanetary -> onLoadPlanetary()
@@ -59,14 +58,12 @@ class PlanetaryViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun onDeleteFavoritePlanetary(date: String) = safeLaunch {
         call(deletePlanetaryFavorite(DeletePlanetaryFavorite.Params(date))) {
             onTriggerEvent(PlanetaryEvent.LoadFavoritesPlanetary)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun onOrderPlanetary(orderType: ReorderType, planetary: List<PlanetaryDto>) {
         when (orderType) {
             ReorderType.ORDER_BY_TITLE -> {

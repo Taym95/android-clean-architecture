@@ -13,11 +13,11 @@ import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.adyen.android.assignment.R
+import com.adyen.android.assignment.app.theme.DarkBlue
 
 @Composable
 fun EmptyView(modifier: Modifier = Modifier) {
@@ -30,7 +30,7 @@ fun EmptyView(modifier: Modifier = Modifier) {
         Icon(
             painter = rememberVectorPainter(Icons.Default.HourglassEmpty),
             contentDescription = null,
-            tint = Red,
+            tint = DarkBlue,
             modifier = modifier
         )
         Text(

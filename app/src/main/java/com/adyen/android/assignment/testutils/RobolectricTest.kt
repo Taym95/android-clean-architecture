@@ -12,7 +12,7 @@ import org.robolectric.annotation.Config
 @Config(
     manifest = "AndroidManifest.xml",
     application = RobolectricTest.ApplicationStub::class,
-    sdk = [Build.VERSION_CODES.M]
+    sdk = [Build.VERSION_CODES.O]
 )
 open class RobolectricTest : MockkUnitTest() {
 
