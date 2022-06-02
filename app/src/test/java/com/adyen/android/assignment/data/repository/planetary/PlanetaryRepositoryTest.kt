@@ -29,15 +29,13 @@ class PlanetaryRepositoryTest : MockkUnitTest() {
     @Test
     fun getPlanetaryList() = runTest {
         val count = 1
-        val apiKey = "api_key"
-
         repository.getPlanetaryList(
-            count = count, apiKey = apiKey
+            count = count
         )
 
         coVerify {
             planetaryService.getPlanetaryList(
-                count = count, apiKey = apiKey
+                count = count
             )
         }
     }
@@ -45,15 +43,14 @@ class PlanetaryRepositoryTest : MockkUnitTest() {
     @Test
     fun getPlanetary() = runTest {
         val planetaryDate = "2022-05-31"
-        val apiKey = "api_key"
 
         repository.getPlanetary(
-            date = planetaryDate, apiKey = apiKey
+            date = planetaryDate
         )
 
         coVerify {
             planetaryService.getPlanetary(
-                date = planetaryDate, apiKey = apiKey
+                date = planetaryDate
             )
         }
     }

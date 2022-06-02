@@ -1,13 +1,16 @@
 package com.adyen.android.assignment.data.remote.di
 
+import android.content.Context
 import com.adyen.android.assignment.data.remote.service.PlanetaryService
 import com.adyen.android.assignment.utils.network.createMoshi
 import com.adyen.android.assignment.utils.network.createRetrofitWithMoshi
 import com.adyen.android.assignment.utils.base.app.NetworkConfig
+import com.adyen.android.assignment.utils.network.createOkHttpClient
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import javax.inject.Named
@@ -31,6 +34,18 @@ class RemoteModule {
     fun provideMoshi(): Moshi {
         return createMoshi()
     }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(
+        @ApplicationContext context: Context,
+    ): OkHttpClient {
+        return createOkHttpClient(
+            isCache = true,
+            context = context
+        )
+    }
+
 
     @Provides
     @Singleton

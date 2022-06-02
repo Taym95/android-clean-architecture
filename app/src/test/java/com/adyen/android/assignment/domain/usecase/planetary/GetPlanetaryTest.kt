@@ -21,10 +21,10 @@ class GetPlanetaryTest : MockkUnitTest() {
 
     @Test
     fun verifyExecute() = runTest {
-        val params = GetPlanetary.Params(count = 5, apiKey = "api_key")
+        val params = GetPlanetary.Params(count = 5)
 
         getPlanetary.invoke(params).single()
 
-        coVerify { repository.getPlanetaryList(count = 5, apiKey = "api_key") }
+        coVerify { repository.getPlanetaryList(count = 5) }
     }
 }

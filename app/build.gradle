@@ -2,6 +2,8 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
 
 
 if (!file("local.gradle").exists()) {
@@ -44,6 +46,15 @@ android {
             includeAndroidResources = true
         }
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0-beta02"
+    }
+
 }
 
 dependencies {

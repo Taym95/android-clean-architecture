@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Android Assignment</string>
+    <string name="planetary_list">Planetary list</string>
+    <string name="planetary_favorite_list">Planetary favorite List</string>
+    <string name="planetary_list_title">Planetary</string>
+    <string name="planetary_details_title">Planetary details</string>
+    <string name="planetary_details_info">Informations</string>
+    <string name="planetary_details_explanation">Explanation</string>
+    <string name="planetary_details_info_title">Title</string>
+    <string name="planetary_details_info_date">Date</string>
+    <string name="planetary_details_info_copyright">Copyright</string>
+    <string name="no_data_found">No data found</string>
+    <string name="refresh">Refresh</string>
+    <string name="network_setting">Network setting</string>
+    <string name="something_went_wrong">Oops! something went wrong</string>
+    <string name="something_went_wrong_helper">Please refresh the page and try again.</string>
+    <string name="no_internet">No network connection.</string>
+    <string name="no_internet_helper">Please check your network connection and try again.</string>
 </resources>

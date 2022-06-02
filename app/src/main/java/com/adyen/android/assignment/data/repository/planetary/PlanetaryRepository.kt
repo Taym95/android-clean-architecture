@@ -16,13 +16,11 @@ constructor(
 ) {
     suspend fun getPlanetaryList(
         count: Int,
-        apiKey: String,
-    ) = service.getPlanetaryList(count , apiKey)
+    ) = service.getPlanetaryList(count)
 
     suspend fun getPlanetary(
         date: String,
-        apiKey: String,
-    ) = service.getPlanetary(date , apiKey)
+    ) = service.getPlanetary(date)
 
 
     suspend fun getFavoritePlanetaryList() = dao.getFavoriteList()

@@ -13,6 +13,7 @@ data class PlanetaryDto(
     val service_version: String?,
     val title: String?,
     val url: String?,
+    var isFavorite: Boolean = false
 ) : Parcelable {
     companion object {
         fun init() = PlanetaryDto(
@@ -23,7 +24,8 @@ data class PlanetaryDto(
             media_type = "image",
             service_version = "v1",
             title = "Rocket Transits Rippling Sun",
-            url = "https://apod.nasa.gov/apod/image/2205/FalconSun_Cain_960.jpg"
+            url = "https://apod.nasa.gov/apod/image/2205/FalconSun_Cain_960.jpg" ,
+            isFavorite = false
         )
     }
 }
