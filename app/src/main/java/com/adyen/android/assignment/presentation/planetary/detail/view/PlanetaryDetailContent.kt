@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.adyen.android.assignment.data.model.dto.planetary.PlanetaryDto
@@ -25,7 +24,6 @@ import com.adyen.android.assignment.R
 @Composable
 fun PlanetaryDetailContent(
     state: PlanetaryDetailDetailViewState,
-    navController: NavHostController
 ) {
     LazyColumn {
         state.planetaryDto?.let { planetary ->

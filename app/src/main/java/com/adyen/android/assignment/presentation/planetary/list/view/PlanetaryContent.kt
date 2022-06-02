@@ -1,6 +1,7 @@
 package com.adyen.android.assignment.presentation.planetary.list.view
 
-import androidx.compose.foundation.border
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextOverflow
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlanetaryContent(
     viewModel: PlanetaryViewModel = hiltViewModel(),
@@ -57,6 +59,7 @@ fun PlanetaryContent(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PlanetaryRow(
@@ -125,6 +128,7 @@ fun PlanetaryRow(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FavoriteButton(
     viewModel: PlanetaryViewModel = hiltViewModel(),

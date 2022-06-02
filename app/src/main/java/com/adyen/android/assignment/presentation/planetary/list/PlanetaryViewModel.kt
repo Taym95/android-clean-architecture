@@ -1,8 +1,7 @@
 package com.adyen.android.assignment.presentation.planetary.list
 
-import androidx.annotation.StringRes
-import com.adyen.android.assignment.BuildConfig
-import com.adyen.android.assignment.R
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.adyen.android.assignment.data.model.dto.planetary.PlanetaryDto
 import com.adyen.android.assignment.domain.usecase.planetary.GetPlanetary
 import com.adyen.android.assignment.domain.usecase.planetary.favorite.AddPlanetaryFavorite
@@ -11,7 +10,8 @@ import com.adyen.android.assignment.domain.usecase.planetary.favorite.GetPlaneta
 import com.adyen.android.assignment.utils.base.mvvm.BaseViewState
 import com.adyen.android.assignment.utils.base.mvvm.MvvmIViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,20 +22,25 @@ class PlanetaryViewModel @Inject constructor(
     private val addPlanetaryFavorite: AddPlanetaryFavorite
 ) : MvvmIViewModel<BaseViewState<PlanetaryViewState>, PlanetaryEvent>() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onTriggerEvent(eventType: PlanetaryEvent) {
         when (eventType) {
             is PlanetaryEvent.LoadPlanetary -> onLoadPlanetary()
             is PlanetaryEvent.AddFavoritePlanetary -> onAddFavoritePlanetary(planetary = eventType.planetary)
             is PlanetaryEvent.DeleteFavoritePlanetary -> onDeleteFavoritePlanetary(eventType.date)
             is PlanetaryEvent.LoadFavoritesPlanetary -> onLoadFavoritesPlanetary()
+            is PlanetaryEvent.OrderPlanetary -> onOrderPlanetary(
+                eventType.reorderType,
+                eventType.planetary
+            )
         }
     }
 
     private fun onLoadPlanetary() = safeLaunch {
-        setState(BaseViewState.Loading)
+        setUiState(BaseViewState.Loading)
         val params = GetPlanetary.Params(count = 20)
         execute(getPlanetary(params)) { planetaryList ->
-            setState(BaseViewState.Data(PlanetaryViewState(planetaryList = planetaryList)))
+            setUiState(BaseViewState.Data(PlanetaryViewState(planetaryList = planetaryList)))
         }
     }
 
@@ -47,21 +52,42 @@ class PlanetaryViewModel @Inject constructor(
     private fun onLoadFavoritesPlanetary() = safeLaunch {
         call(getPlanetaryFavorites(Unit)) {
             if (it.isEmpty()) {
-                setState(BaseViewState.Empty)
+                setUiState(BaseViewState.Empty)
             } else {
-                setState(BaseViewState.Data(PlanetaryViewState(favorPlanetaryList = it)))
+                setUiState(BaseViewState.Data(PlanetaryViewState(favorPlanetaryList = it)))
             }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun onDeleteFavoritePlanetary(date: String) = safeLaunch {
         call(deletePlanetaryFavorite(DeletePlanetaryFavorite.Params(date))) {
             onTriggerEvent(PlanetaryEvent.LoadFavoritesPlanetary)
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun onOrderPlanetary(orderType: ReorderType, planetary: List<PlanetaryDto>) {
+        when (orderType) {
+            ReorderType.ORDER_BY_TITLE -> {
+                setUiState(BaseViewState.Data(PlanetaryViewState(planetaryList = planetary.sortedBy { it.title })))
+            }
+            ReorderType.ORDER_BY_DATE -> {
+                val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                setUiState(BaseViewState.Data(PlanetaryViewState(planetaryList = planetary.sortedByDescending {
+                    LocalDate.parse(it.date, dateFormatter)
+                })))
+            }
+        }
+    }
+
+    fun setUiState(state: BaseViewState<PlanetaryViewState>) = safeLaunch {
+        setState(state)
+    }
+
 }
 
-private enum class SortType(@StringRes val value: Int) {
-    SORT_BY(R.string.planetary_list),
-    PLANETARY_LIST_FAVORITE(R.string.planetary_favorite_list);
+enum class ReorderType(val value: String) {
+    ORDER_BY_TITLE("Reorder by title"),
+    ORDER_BY_DATE("Reorder by date");
 }

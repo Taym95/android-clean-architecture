@@ -12,4 +12,6 @@ sealed class PlanetaryEvent {
     object LoadFavoritesPlanetary : PlanetaryEvent()
     data class DeleteFavoritePlanetary(val date: String) : PlanetaryEvent()
     data class AddFavoritePlanetary(val planetary: PlanetaryDto) : PlanetaryEvent()
+    data class OrderPlanetary(val reorderType: ReorderType, val planetary: List<PlanetaryDto>) :
+        PlanetaryEvent()
 }

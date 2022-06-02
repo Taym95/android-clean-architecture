@@ -15,7 +15,6 @@ import com.adyen.android.assignment.app.views.EmptyView
 import com.adyen.android.assignment.app.views.ErrorView
 import com.adyen.android.assignment.app.views.LoadingView
 import com.adyen.android.assignment.presentation.planetary.detail.view.PlanetaryDetailContent
-import com.adyen.android.assignment.presentation.planetary.list.PlanetaryToolbar
 import com.adyen.android.assignment.presentation.planetary.list.PlanetaryToolbarWithNavIcon
 import com.adyen.android.assignment.utils.base.mvvm.BaseViewState
 import com.ramcosta.composedestinations.annotation.Destination
@@ -35,7 +34,6 @@ fun PlanetaryDetailScreen(
         when (uiState) {
             is BaseViewState.Data -> PlanetaryDetailContent(
                 state = (uiState as BaseViewState.Data<PlanetaryDetailDetailViewState>).value,
-                navController = navController
             )
             is BaseViewState.Empty -> EmptyView()
             is BaseViewState.Error -> ErrorView(

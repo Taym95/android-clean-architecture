@@ -16,6 +16,7 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.impl.annotations.SpyK
+import io.mockk.verify
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -91,4 +92,19 @@ class PlanetaryViewModelTest : MockkUnitTest() {
             }
         }
     }
+
+
+    @Test
+    fun verifyOnTriggerEventOrderPlanetaryByTitle() = runTest {
+        planetaryViewModel.onTriggerEvent(PlanetaryEvent.OrderPlanetary(ReorderType.ORDER_BY_TITLE, MockPlanetaryData.getPlanetaryListDto()))
+        verify { planetaryViewModel.setUiState(BaseViewState.Data(PlanetaryViewState(planetaryList = MockPlanetaryData.getPlanetaryOrderByTitleListDto()))) }
+    }
+
+
+    @Test
+    fun verifyOnTriggerEventOrderPlanetaryByDate() = runTest {
+        planetaryViewModel.onTriggerEvent(PlanetaryEvent.OrderPlanetary(ReorderType.ORDER_BY_DATE, MockPlanetaryData.getPlanetaryListDto()))
+        verify { planetaryViewModel.setUiState(BaseViewState.Data(PlanetaryViewState(planetaryList = MockPlanetaryData.getPlanetaryOrderByDateListDto()))) }
+    }
+
 }

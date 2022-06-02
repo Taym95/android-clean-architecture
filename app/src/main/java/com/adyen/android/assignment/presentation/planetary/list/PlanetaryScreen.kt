@@ -1,27 +1,30 @@
 package com.adyen.android.assignment.presentation.planetary.list
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.IndicatorHeight
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.adyen.android.assignment.R
@@ -31,12 +34,8 @@ import com.adyen.android.assignment.app.views.LoadingView
 import com.adyen.android.assignment.presentation.planetary.list.view.FavoritePlanetaryContent
 import com.adyen.android.assignment.presentation.planetary.list.view.PlanetaryContent
 import com.adyen.android.assignment.utils.base.mvvm.BaseViewState
-import com.adyen.android.assignment.utils.network.ConnectionState
-import com.adyen.android.assignment.utils.network.connectivityState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlanetaryScreen(
     modifier: Modifier = Modifier,
@@ -44,13 +43,21 @@ fun PlanetaryScreen(
     navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val selectedIndex =
+        rememberSaveable { mutableStateOf(PlanetaryTabs.PLANETARY_LIST.ordinal) }
+    var openReorderDialog by remember {
+        mutableStateOf(false)
+    }
+
 
     PlanetaryBody(
+        selectedTabIndex = selectedIndex.value,
+        onOrder = {
+            openReorderDialog = true
+        }
     ) { padding ->
         Column {
             val tabsNames = remember { PlanetaryTabs.values().map { it.value } }
-            val selectedIndex =
-                rememberSaveable { mutableStateOf(PlanetaryTabs.PLANETARY_LIST.ordinal) }
             TabRow(
                 selectedTabIndex = selectedIndex.value,
                 indicator = { tabPositions ->
@@ -92,7 +99,23 @@ fun PlanetaryScreen(
                 }
             }
         }
+        if (openReorderDialog) {
+            ReorderDialog(onDismiss = {
+                openReorderDialog = false
+                viewModel.onTriggerEvent(
+                    PlanetaryEvent.OrderPlanetary(
+                        it,
+                        (uiState as BaseViewState.Data<PlanetaryViewState>).value.planetaryList.mutableCopyOf()
+                    )
+                )
+            })
+        }
+
     }
+}
+
+fun <T> List<T>.mutableCopyOf(): MutableList<T> {
+    return mutableListOf<T>().also { it.addAll(this) }
 }
 
 private enum class PlanetaryTabs(@StringRes val value: Int) {
@@ -100,6 +123,7 @@ private enum class PlanetaryTabs(@StringRes val value: Int) {
     PLANETARY_LIST_FAVORITE(R.string.planetary_favorite_list);
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun PlanetaryPage(
     uiState: BaseViewState<*>,
@@ -127,16 +151,15 @@ private fun PlanetaryPage(
         is BaseViewState.Loading -> LoadingView()
     }
 
-        LaunchedEffect(key1 = viewModel, block = {
-            if(isData && (uiState as BaseViewState.Data<PlanetaryViewState>).value.planetaryList.isEmpty()){
-                viewModel.onTriggerEvent(PlanetaryEvent.LoadPlanetary)
-            } else if(!isData){
-                viewModel.onTriggerEvent(PlanetaryEvent.LoadPlanetary)
-            }
-        })
+    LaunchedEffect(key1 = viewModel, block = {
+        if ((isData && (uiState as BaseViewState.Data<PlanetaryViewState>).value.planetaryList.isEmpty()) || !isData) {
+            viewModel.onTriggerEvent(PlanetaryEvent.LoadPlanetary)
+        }
+    })
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun FavoritesPage(
     uiState: BaseViewState<*>,
@@ -172,6 +195,8 @@ private fun FavoritesPage(
 
 @Composable
 private fun PlanetaryBody(
+    selectedTabIndex: Int,
+    onOrder: () -> Unit,
     pageContent: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
@@ -180,6 +205,26 @@ private fun PlanetaryBody(
                 stringResource(R.string.planetary_list_title),
                 elevation = 0.dp,
             )
+        },
+        floatingActionButton = {
+            if (selectedTabIndex == PlanetaryTabs.PLANETARY_LIST.ordinal) {
+                FloatingActionButton(
+                    modifier = Modifier.padding(24.dp),
+                    onClick = {
+                        onOrder()
+                    },
+                    shape = RoundedCornerShape(percent = 50),
+                ) {
+                    Row(
+                        modifier = Modifier.width(130.dp),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(imageVector = Icons.Default.List, "")
+                        Text(text = "Reorder list")
+                    }
+                }
+            }
         },
         content = { pageContent.invoke(it) }
     )
@@ -230,4 +275,88 @@ fun PlanetaryToolbarWithNavIcon(
         modifier = Modifier.fillMaxWidth(),
         elevation = elevation
     )
+}
+
+
+@Composable
+fun ReorderDialog(onDismiss: (reorderType: ReorderType) -> Unit) {
+    var reorderType by remember {
+        mutableStateOf(ReorderType.ORDER_BY_TITLE)
+    }
+
+    Dialog(
+        onDismissRequest = {
+            onDismiss(reorderType)
+        }
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth(),
+            elevation = 4.dp
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
+                    text = "Reorder list",
+                    textAlign = TextAlign.Center,
+                )
+
+                GroupedCheckbox(
+                    mItemsList = listOf(
+                        ReorderType.ORDER_BY_DATE,
+                        ReorderType.ORDER_BY_TITLE,
+                    ),
+                    onSelect = {
+                        reorderType = it
+                    }
+                )
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 36.dp, start = 36.dp, end = 36.dp, bottom = 8.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF35898f)),
+                    onClick = {
+                        onDismiss(reorderType)
+                    }) {
+                    Text(
+                        text = "Apply",
+                        color = Color.White,
+                    )
+                }
+                TextButton(
+                    onClick = {
+                        onDismiss(reorderType)
+                    }) {
+                    Text(
+                        text = "Reset",
+                        style = TextStyle(
+                            fontSize = 14.sp
+                        )
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun GroupedCheckbox(mItemsList: List<ReorderType>, onSelect: (reorderType: ReorderType) -> Unit) {
+    var selected by remember { mutableStateOf(ReorderType.ORDER_BY_TITLE) }
+    mItemsList.forEach { item ->
+        Row(
+            modifier = Modifier.padding(8.dp), horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = item.value)
+            RadioButton(selected = (selected == item), onClick = {
+                selected = item
+                onSelect(item)
+            })
+        }
+    }
 }
